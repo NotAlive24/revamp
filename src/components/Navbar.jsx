@@ -30,6 +30,7 @@ export default function Navbar() {
             <button onClick={() => scrollToSection("achievements")}>Achievements</button>
             <button onClick={() => scrollToSection("certificates")}>Certificates</button>
             <button onClick={() => scrollToSection("writeups")}>Write-ups</button>
+            <button onClick={() => scrollToSection("contact")}>Contact</button>
         </div>
     </nav>
   );
