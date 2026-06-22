@@ -29,7 +29,7 @@ export default function Navbar() {
             <button onClick={() => scrollToSection("about")}>About</button>
             <button onClick={() => scrollToSection("achievements")}>Achievements</button>
             <button onClick={() => scrollToSection("certificates")}>Certificates</button>
-            <button onClick={() => scrollToSection("Write-ups")}>Write-ups</button>
+            <button onClick={() => scrollToSection("writeups")}>Write-ups</button>
         </div>
     </nav>
   );

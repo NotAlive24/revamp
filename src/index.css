@@ -261,3 +261,77 @@ body {
   line-height: 1;
   cursor: pointer;
 }
+
+
+
+.writeups {
+  min-height: 100vh;
+  padding: 120px 40px;
+}
+
+.writeups-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.writeup-card {
+  display: block;
+  min-height: 260px;
+  padding: 24px;
+  border-radius: 24px;
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: white;
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.writeup-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(245, 222, 179, 0.45);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.writeup-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.writeup-top p {
+  margin: 0;
+  color: wheat;
+  font-size: 0.95rem;
+}
+
+.writeup-top span {
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+
+.writeup-description {
+  margin: 0;
+  opacity: 0.75;
+  line-height: 1.6;
+}
+
+.writeup-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.writeup-tags span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
