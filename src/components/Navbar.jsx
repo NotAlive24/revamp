@@ -8,7 +8,7 @@ export default function Navbar() {
   const target = section.querySelector("h2") || section;
 
   const navbarHeight = navbar ? navbar.offsetHeight : 0;
-  const gapBelowNavbar = 140;
+  const gapBelowNavbar = 80;
 
   const elementTopOnPage =
     target.getBoundingClientRect().top + window.scrollY;
@@ -28,7 +28,8 @@ export default function Navbar() {
         <div className="nav-links">
             <button onClick={() => scrollToSection("about")}>About</button>
             <button onClick={() => scrollToSection("achievements")}>Achievements</button>
-            <button onClick={() => scrollToSection("contact")}>Contact</button>
+            <button onClick={() => scrollToSection("certificates")}>Certificates</button>
+            <button onClick={() => scrollToSection("Write-ups")}>Write-ups</button>
         </div>
     </nav>
   );
