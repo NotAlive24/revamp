@@ -48,9 +48,15 @@ export default function Writeups() {
 
     return [
       "All",
-      ...new Set(collectionWriteups.map((writeup) => writeup.section)),
+      ...new Set(
+        collectionWriteups
+          .map((writeup) => writeup.section)
+          .filter(Boolean)
+      ),
     ];
   }, [selectedCollection]);
+
+  const normalizedSearch = search.trim().toLowerCase();
 
   const filteredWriteups = useMemo(() => {
     return writeups.filter((writeup) => {
@@ -61,14 +67,22 @@ export default function Writeups() {
         selectedSection === "All" ||
         writeup.section === selectedSection;
 
+      const searchableText = [
+        writeup.title,
+        writeup.collection,
+        writeup.section,
+        writeup.path,
+      ]
+        .join(" ")
+        .toLowerCase();
+
       const matchesSearch =
-        writeup.title.toLowerCase().includes(search.toLowerCase()) ||
-        writeup.section.toLowerCase().includes(search.toLowerCase()) ||
-        writeup.collection.toLowerCase().includes(search.toLowerCase());
+        normalizedSearch === "" ||
+        searchableText.includes(normalizedSearch);
 
       return matchesCollection && matchesSection && matchesSearch;
     });
-  }, [selectedCollection, selectedSection, search]);
+  }, [selectedCollection, selectedSection, normalizedSearch]);
 
   const activeIndex = useMemo(() => {
     if (!activeWriteup) return -1;
@@ -90,6 +104,12 @@ export default function Writeups() {
     setSelectedCollection(collection);
     setSelectedSection("All");
     setSearch("");
+    setActiveWriteup(null);
+    setMarkdown("");
+  }
+
+  function selectSection(section) {
+    setSelectedSection(section);
     setActiveWriteup(null);
     setMarkdown("");
   }
@@ -156,7 +176,7 @@ export default function Writeups() {
       return;
     }
 
-    setSelectedSection(section);
+    selectSection(section);
   }
 
   return (

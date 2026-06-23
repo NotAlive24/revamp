@@ -45,14 +45,19 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 10;
+  z-index: 50;
   overflow: hidden;
 
-  /* Fucking background blur */
-  background: rgba(15, 15, 15, 0.55);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(15, 15, 15, 0.72) !important;
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .navbar {
+    background: rgba(15, 15, 15, 0.92) !important;
+  }
 }
 
 .nav-links {
@@ -538,6 +543,12 @@ body {
 .writeup-nav-button:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .writeup-reader-nav {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Contact */
