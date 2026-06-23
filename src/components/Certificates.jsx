@@ -23,7 +23,7 @@ export default function Certificates() {
 
   return (
     <div id="certificates" className="certificates">
-      <div className="certificates-header">
+      <div>
         <h2>Certificates</h2>
         <p>Some certifications and achievements I have earned.</p>
       </div>

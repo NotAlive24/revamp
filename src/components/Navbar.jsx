@@ -22,16 +22,17 @@ export default function Navbar() {
   });
 }
 
-  return (
-    <nav className="navbar">
-        <img src="/logo.png" alt="logo" className="main-logo"/>
-        <div className="nav-links">
-            <button onClick={() => scrollToSection("about")}>About</button>
-            <button onClick={() => scrollToSection("achievements")}>Achievements</button>
-            <button onClick={() => scrollToSection("certificates")}>Certificates</button>
-            <button onClick={() => scrollToSection("writeups")}>Write-ups</button>
-            <button onClick={() => scrollToSection("contact")}>Contact</button>
-        </div>
+
+return (
+  <nav className="navbar">
+    <img className="nav-logo" src="/logo.png" alt="Logo" />
+      <div className="nav-links">
+          <button onClick={() => scrollToSection("about")}>About</button>
+          <button onClick={() => scrollToSection("achievements")}>Achievements</button>
+          <button onClick={() => scrollToSection("certificates")}>Certificates</button>
+          <button onClick={() => scrollToSection("writeups")}>Write-ups</button>
+          <button onClick={() => scrollToSection("contact")}>Contact</button>
+      </div>
     </nav>
   );
 }
