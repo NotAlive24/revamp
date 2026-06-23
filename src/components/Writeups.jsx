@@ -36,10 +36,6 @@ export default function Writeups() {
   const [markdown, setMarkdown] = useState("");
 
   const sectionsRef = useRef(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const startScrollLeft = useRef(0);
-  const moved = useRef(false);
 
   const sections = useMemo(() => {
     const collectionWriteups = writeups.filter(
@@ -114,6 +110,16 @@ export default function Writeups() {
     setMarkdown("");
   }
 
+  function scrollSectionsWithWheel(event) {
+    const element = sectionsRef.current;
+    if (!element) return;
+
+    if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+      element.scrollLeft += event.deltaY;
+      event.preventDefault();
+    }
+  }
+
   async function openWriteup(writeup) {
     if (!writeup) return;
 
@@ -133,50 +139,6 @@ export default function Writeups() {
   function closeWriteup() {
     setActiveWriteup(null);
     setMarkdown("");
-  }
-
-  function handleSectionPointerDown(event) {
-    const element = sectionsRef.current;
-    if (!element) return;
-
-    isDragging.current = true;
-    moved.current = false;
-    startX.current = event.clientX;
-    startScrollLeft.current = element.scrollLeft;
-
-    element.classList.add("dragging");
-    element.setPointerCapture?.(event.pointerId);
-  }
-
-  function handleSectionPointerMove(event) {
-    const element = sectionsRef.current;
-    if (!element || !isDragging.current) return;
-
-    const distance = event.clientX - startX.current;
-
-    if (Math.abs(distance) > 4) {
-      moved.current = true;
-    }
-
-    element.scrollLeft = startScrollLeft.current - distance;
-  }
-
-  function handleSectionPointerUp(event) {
-    const element = sectionsRef.current;
-    if (!element) return;
-
-    isDragging.current = false;
-    element.classList.remove("dragging");
-    element.releasePointerCapture?.(event.pointerId);
-  }
-
-  function handleSectionClick(section) {
-    if (moved.current) {
-      moved.current = false;
-      return;
-    }
-
-    selectSection(section);
   }
 
   return (
@@ -292,10 +254,7 @@ export default function Writeups() {
             <div
               className="writeup-sections"
               ref={sectionsRef}
-              onPointerDown={handleSectionPointerDown}
-              onPointerMove={handleSectionPointerMove}
-              onPointerUp={handleSectionPointerUp}
-              onPointerLeave={handleSectionPointerUp}
+              onWheel={scrollSectionsWithWheel}
             >
               {sections.map((section) => (
                 <button
@@ -306,7 +265,7 @@ export default function Writeups() {
                       ? "writeup-section-button active"
                       : "writeup-section-button"
                   }
-                  onClick={() => handleSectionClick(section)}
+                  onClick={() => selectSection(section)}
                 >
                   {section}
                 </button>
