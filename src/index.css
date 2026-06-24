@@ -452,7 +452,7 @@ body {
 
 .writeup-reader h2 {
   margin-top: 48px;
-  color: wheat;
+  color: rgb(208, 202, 191);
 }
 
 .writeup-reader p {
@@ -742,4 +742,13 @@ body {
   .contact-card strong {
     font-size: 1.1rem;
   }
+}
+
+.writeup-reader-title {
+  padding-top: 2.0rem;
+  margin: 0 0 28px;
+  color: rgb(245, 217, 165);
+  font-weight: bold;
+  font-size: clamp(2.4rem, 6vw, 3rem);
+  line-height: 1.0;
 }

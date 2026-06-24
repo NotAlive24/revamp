@@ -163,6 +163,10 @@ export default function Writeups() {
             <span>{activeWriteup.section}</span>
           </div>
 
+          <div className="writeup-reader-title">
+            {activeWriteup.title}
+          </div>
+
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
