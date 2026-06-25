@@ -1,3 +1,4 @@
+Note: If the contents are not understood, no need to worry, cause, it's just the summary of what will be covered throughout the whole write-up.
 ## What is an Operating System (OS)?
 
 An **Operating System** is a program that acts as an intermediary between the application and the hardware
@@ -66,4 +67,6 @@ We are gonna look into simple **batch systems**, where the computers runs one an
 - A program loaded into the memory and is being executed is commonly known as a **process**, the process typically finishes in a short amount of time unless an I/O is to be required.
 - When an input is required, the process has to wait till the user enters an input, for example: 7 characters per second is faster for humans, but for computers that's incredibly slow, when the interactive input takes play the CPU rapidly switches to some other program of some other user.
 - In both, Time-Sharing OS and Multiprogrammed OS it is difficult to manage memory and protect it, to obtain a reasonable response time, jobs gets swapped in and out of the main memory to the disk which serves as a backing store for the main memory.
-- **Virtual memory** is a technique that allows the execution of a job that may not be in memory, the main advantage is that the program can be larger than the physical memory
+- **Virtual memory** is a technique that allows the execution of a job that may not be in memory, the main advantage is that the program can be larger than the physical memory, meaning, when the RAM is not enough we use the storage device to store the memory, example : swap partition on Linux.
+- To achieve this, virtual memory abstracts the main memory into a large, uniform array of storage, separating the logical memory as viewed by the user from the actual physical memory. This means the programmer or user sees a giant, continuous, unbroken line of memory addresses (logical memory), while in reality, the hardware chops the program into tiny pieces and scatters them across different parts of the RAM and the hard drive (physical memory).
+- Time-Sharing systems must provide a file-system, the file system resides on a collection of disks, hence disk management is provided, it also provides mechanisms for concurrent execution, also it ensures orderly execution by priority for it this uses job synchronization, also it makes sure that jobs do not gets into deadlock and waits forever.
