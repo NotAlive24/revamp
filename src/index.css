@@ -752,3 +752,82 @@ body {
   font-size: clamp(2.4rem, 6vw, 3rem);
   line-height: 1.0;
 }
+
+
+.music-player {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 280px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.music-button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(245, 222, 179, 0.16);
+  color: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: grid;
+  place-items: center;
+}
+
+.music-button:hover {
+  background: wheat;
+  color: #111;
+}
+
+.music-play {
+  background: wheat;
+  color: #111;
+}
+
+.music-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.music-title {
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.music-artist {
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.7rem;
+  opacity: 0.65;
+}
+
+
+@media (max-width: 600px) {
+  .music-player {
+    max-width: 120px;
+    padding: 6px;
+    gap: 4px;
+  }
+
+  .music-button {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  .music-info {
+    display: none;
+  }
+}
