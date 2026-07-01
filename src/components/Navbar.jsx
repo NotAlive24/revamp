@@ -27,23 +27,37 @@ export default function Navbar() {
     <nav className="navbar">
       <img className="nav-logo" src="/logo.png" alt="NotAlive logo" />
 
-      <div className="nav-links">
-        <button onClick={() => scrollToSection("about")}>About</button>
-        <button onClick={() => scrollToSection("achievements")}>
-          Achievements
-        </button>
-        <button onClick={() => scrollToSection("certificates")}>
-          Certs
-        </button>
-        <button onClick={() => scrollToSection("writeups")}>
-          Write-ups
-        </button>
-        <button onClick={() => scrollToSection("contact")}>
-          Contact
-        </button>
-      </div>
+      <div className="nav-right">
+        <div className="nav-links">
+          <button type="button" onClick={() => scrollToSection("about")}>
+            About
+          </button>
 
-      <MusicPlayer />
+          <button
+            type="button"
+            onClick={() => scrollToSection("achievements")}
+          >
+            Achievements
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scrollToSection("certificates")}
+          >
+            Certs
+          </button>
+
+          <button type="button" onClick={() => scrollToSection("writeups")}>
+            Write-ups
+          </button>
+
+          <button type="button" onClick={() => scrollToSection("contact")}>
+            Contact
+          </button>
+        </div>
+
+        <MusicPlayer />
+      </div>
     </nav>
   );
 }
