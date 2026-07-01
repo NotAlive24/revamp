@@ -16,7 +16,7 @@ export default function MusicPlayer() {
 
     try {
       setError("");
-      audio.volume = 0.3;
+      audio.volume = 1;
       await audio.play();
       setIsPlaying(true);
     } catch (err) {
