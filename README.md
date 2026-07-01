@@ -1,3 +1,3 @@
 The site is not here
 
-(NotAlive)[https://notalive.in/]
+[NotAlive](https://notalive.in/)
