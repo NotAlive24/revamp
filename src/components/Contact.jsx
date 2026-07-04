@@ -1,3 +1,5 @@
+import { useReveal } from "../hooks/useReveal.js";
+
 const contacts = [
   {
     label: "Email",
@@ -19,6 +21,23 @@ const contacts = [
   },
 ];
 
+function ContactCard({ item }) {
+  const [ref, isVisible] = useReveal();
+
+  return (
+    <a
+      ref={ref}
+      className={`contact-card reveal ${isVisible ? "reveal-visible" : ""}`}
+      href={item.href}
+      target={item.external ? "_blank" : undefined}
+      rel={item.external ? "noopener noreferrer" : undefined}
+    >
+      <span>{item.label}</span>
+      <strong>{item.value}</strong>
+    </a>
+  );
+}
+
 export default function Contact() {
   return (
     <div id="contact" className="contact">
@@ -32,16 +51,7 @@ export default function Contact() {
 
       <div className="contact-grid">
         {contacts.map((item) => (
-          <a
-            className="contact-card"
-            key={item.label}
-            href={item.href}
-            target={item.external ? "_blank" : undefined}
-            rel={item.external ? "noopener noreferrer" : undefined}
-          >
-            <span>{item.label}</span>
-            <strong>{item.value}</strong>
-          </a>
+          <ContactCard key={item.label} item={item} />
         ))}
       </div>
     </div>

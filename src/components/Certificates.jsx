@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useReveal } from "../hooks/useReveal.js";
 
 const certificates = [
   {
@@ -18,6 +19,30 @@ const certificates = [
   },
 ];
 
+function CertificateCard({ cert, onSelect }) {
+  const [ref, isVisible] = useReveal();
+
+  return (
+    <button
+      ref={ref}
+      className={`certificate-card reveal ${isVisible ? "reveal-visible" : ""}`}
+      type="button"
+      onClick={() => onSelect(cert)}
+    >
+      <img
+        src={cert.image}
+        alt={cert.title}
+        onLoad={(event) => event.target.classList.add("img-loaded")}
+      />
+
+      <div className="certificate-info">
+        <h3>{cert.title}</h3>
+        <p>{cert.issuer}</p>
+      </div>
+    </button>
+  );
+}
+
 export default function Certificates() {
   const [selectedCert, setSelectedCert] = useState(null);
 
@@ -28,23 +53,21 @@ export default function Certificates() {
         <p>Some certifications and achievements I have earned.</p>
       </div>
 
-      <div className="certificates-grid">
-        {certificates.map((cert) => (
-          <button
-            className="certificate-card"
-            key={cert.title}
-            type="button"
-            onClick={() => setSelectedCert(cert)}
-          >
-            <img src={cert.image} alt={cert.title} />
-
-            <div className="certificate-info">
-              <h3>{cert.title}</h3>
-              <p>{cert.issuer}</p>
-            </div>
-          </button>
-        ))}
-      </div>
+      {certificates.length === 0 ? (
+        <div className="certificates-empty">
+          <p>Certificates coming soon.</p>
+        </div>
+      ) : (
+        <div className="certificates-grid">
+          {certificates.map((cert) => (
+            <CertificateCard
+              key={cert.title}
+              cert={cert}
+              onSelect={setSelectedCert}
+            />
+          ))}
+        </div>
+      )}
 
       {selectedCert && (
         <div
@@ -63,7 +86,11 @@ export default function Certificates() {
               ×
             </button>
 
-            <img src={selectedCert.image} alt={selectedCert.title} />
+            <img
+              src={selectedCert.image}
+              alt={selectedCert.title}
+              onLoad={(event) => event.target.classList.add("img-loaded")}
+            />
 
             <h3>{selectedCert.title}</h3>
             <p>{selectedCert.issuer}</p>

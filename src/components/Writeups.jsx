@@ -2,6 +2,27 @@ import { useMemo, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { writeups } from "../data/writeups.js";
+import { useReveal } from "../hooks/useReveal.js";
+
+function WriteupListItem({ writeup, onOpen }) {
+  const [ref, isVisible] = useReveal();
+
+  return (
+    <button
+      ref={ref}
+      type="button"
+      className={`writeup-list-item reveal ${isVisible ? "reveal-visible" : ""}`}
+      onClick={() => onOpen(writeup)}
+    >
+      <div>
+        <h3>{writeup.title}</h3>
+        <p>{writeup.section}</p>
+      </div>
+
+      <span>Read →</span>
+    </button>
+  );
+}
 
 function encodePath(fileName) {
   return fileName
@@ -120,6 +141,11 @@ export default function Writeups() {
     }
   }
 
+  function clearFilters() {
+    setSearch("");
+    setSelectedSection("All");
+  }
+
   async function openWriteup(writeup) {
     if (!writeup) return;
 
@@ -148,7 +174,11 @@ export default function Writeups() {
         <p>Cybersecurity notes, walkthroughs, and learning logs.</p>
       </div>
 
-      {activeWriteup ? (
+      {collections.length === 0 ? (
+        <div className="writeups-empty">
+          <p>No write-ups have been published yet — check back soon.</p>
+        </div>
+      ) : activeWriteup ? (
         <article className="writeup-reader">
           <button
             className="writeup-back"
@@ -189,6 +219,9 @@ export default function Writeups() {
                     className="writeup-media"
                     src={source}
                     alt={alt || ""}
+                    onLoad={(event) =>
+                      event.target.classList.add("img-loaded")
+                    }
                   />
                 );
               },
@@ -281,23 +314,31 @@ export default function Writeups() {
               {filteredWriteups.length === 1 ? "" : "s"}
             </p>
 
-            <div className="writeups-list">
-              {filteredWriteups.map((writeup) => (
+            {filteredWriteups.length === 0 ? (
+              <div className="writeup-empty">
+                <p>
+                  No write-ups match{" "}
+                  {search ? <strong>"{search}"</strong> : "this filter"}.
+                </p>
                 <button
-                  key={writeup.slug}
                   type="button"
-                  className="writeup-list-item"
-                  onClick={() => openWriteup(writeup)}
+                  className="writeup-empty-reset"
+                  onClick={clearFilters}
                 >
-                  <div>
-                    <h3>{writeup.title}</h3>
-                    <p>{writeup.section}</p>
-                  </div>
-
-                  <span>Read →</span>
+                  Clear filters
                 </button>
-              ))}
-            </div>
+              </div>
+            ) : (
+              <div className="writeups-list">
+                {filteredWriteups.map((writeup) => (
+                  <WriteupListItem
+                    key={writeup.slug}
+                    writeup={writeup}
+                    onOpen={openWriteup}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

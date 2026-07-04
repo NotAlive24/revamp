@@ -7,10 +7,16 @@ export default function StarBackground() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
     let width = window.innerWidth;
     let height = window.innerHeight;
     let stars = [];
+    let shootingStars = [];
     let animationFrame;
+    let nextShootingStarAt = 0;
 
     const mouse = {
       x: -9999,
@@ -57,9 +63,31 @@ export default function StarBackground() {
       }));
     }
 
-    function handlePointerMove(event) {
-      mouse.targetX = event.clientX;
-      mouse.targetY = event.clientY;
+    function spawnShootingStar() {
+      const startX = random(width * 0.1, width * 0.9);
+      const startY = random(0, height * 0.3);
+      const angle = random(Math.PI * 0.15, Math.PI * 0.3);
+      const speed = random(9, 14);
+
+      shootingStars.push({
+        x: startX,
+        y: startY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 1,
+        length: random(80, 140),
+      });
+    }
+
+    function drawStaticStars() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (const star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.fill();
+      }
     }
 
     function animate(time) {
@@ -99,15 +127,50 @@ export default function StarBackground() {
         ctx.fill();
       }
 
+      if (time > nextShootingStarAt) {
+        spawnShootingStar();
+        nextShootingStarAt = time + random(4000, 9000);
+      }
+
+      shootingStars = shootingStars.filter((s) => s.life > 0);
+
+      for (const s of shootingStars) {
+        const tailX = s.x - s.vx * (s.length / 12);
+        const tailY = s.y - s.vy * (s.length / 12);
+
+        const gradient = ctx.createLinearGradient(s.x, s.y, tailX, tailY);
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${s.life})`);
+        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+
+        ctx.beginPath();
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 2;
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(tailX, tailY);
+        ctx.stroke();
+
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life -= 0.012;
+      }
+
       animationFrame = requestAnimationFrame(animate);
     }
 
+    function handlePointerMove(event) {
+      mouse.targetX = event.clientX;
+      mouse.targetY = event.clientY;
+    }
+
     resizeCanvas();
-
     window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("pointermove", handlePointerMove);
 
-    animationFrame = requestAnimationFrame(animate);
+    if (prefersReducedMotion) {
+      drawStaticStars();
+    } else {
+      window.addEventListener("pointermove", handlePointerMove);
+      animationFrame = requestAnimationFrame(animate);
+    }
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
