@@ -1,8 +1,8 @@
 export const songs = [
   {
-    title: "Dirty Diana",
+    title: "Billie Jean",
     artist: "Michael",
-    src: "/music/Dirty-Diana.mp3",
+    src: "/music/Billie-Jean.mp3",
   },
   {
     title: "Bad",
@@ -20,9 +20,9 @@ export const songs = [
     src: "/music/Beat-It.mp3",
   },
   {
-    title: "Billie Jean",
+    title: "Dirty Diana",
     artist: "Michael",
-    src: "/music/Billie-Jean.mp3",
+    src: "/music/Dirty-Diana.mp3",
   },
   {
     title: "Black or White",

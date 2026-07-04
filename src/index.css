@@ -819,7 +819,7 @@ body {
   word-break: break-word;
 }
 
-/* Tablet / Small screens */
+/* Tablet / Small screens I want someone to help me fix this spot */
 
 @media (max-width: 800px) {
   .writeups-layout {
@@ -859,7 +859,7 @@ body {
   }
 }
 
-/* Fixes the awkward 2-column transition zone right before the mobile breakpoint */
+
 @media (max-width: 700px) and (min-width: 601px) {
   .certificates-grid,
   .contact-grid {

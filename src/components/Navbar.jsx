@@ -104,7 +104,6 @@ export default function Navbar() {
     if (wasPlayingRef.current) {
       playAudio();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSongIndex]);
 
   const displayText = error || currentSong.title;
@@ -207,7 +206,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Volume Popover Setup per CSS */}
+          {/* Volume Pop(down)over Setup */}
           <div className="music-volume-wrapper">
             <button 
               className="music-volume-toggle"
