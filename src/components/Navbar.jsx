@@ -3,17 +3,34 @@ import { songs } from "../data/songs.js";
 
 const DEFAULT_VOLUME = 0.5;
 
-export default function MusicPlayer() {
+export default function Navbar() {
   const audioRef = useRef(null);
   const wasPlayingRef = useRef(false);
 
+  // Music Player State
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState("");
   const [volume, setVolume] = useState(DEFAULT_VOLUME);
+  
+  // UI State for the CSS classes
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isVolumeOpen, setIsVolumeOpen] = useState(false);
 
-  const currentSong = songs[currentSongIndex];
+  const currentSong = songs?.[currentSongIndex] || { title: "No Track", artist: "", src: "" };
 
+  // Smooth scroll handler
+  const scrollToSection = (id) => {
+    setIsNavOpen(false); // Close mobile menu on click
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.warn(`Section with id "${id}" not found.`);
+    }
+  };
+
+  // --- Audio Functions ---
   async function playAudio() {
     const audio = audioRef.current;
     if (!audio) return;
@@ -76,6 +93,7 @@ export default function MusicPlayer() {
     }
   }
 
+  // Reload audio when song changes
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -92,74 +110,133 @@ export default function MusicPlayer() {
   const displayText = error || currentSong.title;
 
   return (
-    <div className="music-player">
-      <audio
-        ref={audioRef}
-        src={currentSong.src}
-        preload="metadata"
-        onEnded={nextSong}
-        onError={() => {
-          console.error("Audio failed to load:", currentSong.src);
-          setError("File missing");
-          setIsPlaying(false);
-        }}
-      />
+    <nav className="navbar">
+      <img className="nav-logo" src="/logo.png" alt="NotAlive logo" />
 
-      <div className="music-info">
-        {error === "File missing" ? (
-          <button
-            type="button"
-            className="music-retry"
-            onClick={retryLoad}
-            aria-live="polite"
-          >
-            {displayText} — retry
+      {/* Mobile Toggle Button */}
+      <button 
+        className={`nav-toggle ${isNavOpen ? "open" : ""}`} 
+        onClick={() => setIsNavOpen(!isNavOpen)}
+        aria-label="Toggle navigation"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div className="nav-right">
+        {/* Navigation Links */}
+        <div className={`nav-links ${isNavOpen ? "open" : ""}`}>
+          <button type="button" onClick={() => scrollToSection("about")}>
+            About
           </button>
-        ) : (
-          <span className="music-title" aria-live="polite">
-            {displayText}
-          </span>
-        )}
-        <span className="music-artist">{currentSong.artist}</span>
+          <button type="button" onClick={() => scrollToSection("achievements")}>
+            Achievements
+          </button>
+          <button type="button" onClick={() => scrollToSection("certificates")}>
+            Certs
+          </button>
+          <button type="button" onClick={() => scrollToSection("writeups")}>
+            Write-ups
+          </button>
+          <button type="button" onClick={() => scrollToSection("contact")}>
+            Contact
+          </button>
+        </div>
+
+        {/* Music Player Section */}
+        <div className="nav-music-wrapper">
+          <div className="music-player">
+            <audio
+              ref={audioRef}
+              src={currentSong.src}
+              preload="metadata"
+              onEnded={nextSong}
+              onError={() => {
+                console.error("Audio failed to load:", currentSong.src);
+                setError("File missing");
+                setIsPlaying(false);
+              }}
+            />
+
+            <div className="music-info">
+              {error === "File missing" ? (
+                <button
+                  type="button"
+                  className="music-retry"
+                  onClick={retryLoad}
+                  aria-live="polite"
+                >
+                  {displayText} — retry
+                </button>
+              ) : (
+                <span className="music-title" aria-live="polite">
+                  {displayText}
+                </span>
+              )}
+              <span className="music-artist">{currentSong.artist}</span>
+            </div>
+
+            <div className="music-controls" style={{ display: 'flex', gap: '4px' }}>
+              <button
+                className="music-button"
+                type="button"
+                onClick={previousSong}
+                aria-label="Previous song"
+              >
+                ⏮
+              </button>
+
+              <button
+                className="music-button music-play"
+                type="button"
+                onClick={togglePlay}
+                aria-label={isPlaying ? "Pause song" : "Play song"}
+              >
+                {isPlaying ? "⏸" : "▶"}
+              </button>
+
+              <button
+                className="music-button"
+                type="button"
+                onClick={nextSong}
+                aria-label="Next song"
+              >
+                ⏭
+              </button>
+            </div>
+          </div>
+
+          {/* Volume Popover Setup per CSS */}
+          <div className="music-volume-wrapper">
+            <button 
+              className="music-volume-toggle"
+              onClick={() => setIsVolumeOpen(!isVolumeOpen)}
+              aria-label="Toggle Volume"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+            </button>
+
+            {isVolumeOpen && (
+              <div className="music-volume-popover">
+                <input
+                  className="music-volume"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                  aria-label="Volume"
+                />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-
-      <button
-        className="music-button"
-        type="button"
-        onClick={previousSong}
-        aria-label="Previous song"
-      >
-        ⏮
-      </button>
-
-      <button
-        className="music-button music-play"
-        type="button"
-        onClick={togglePlay}
-        aria-label={isPlaying ? "Pause song" : "Play song"}
-      >
-        {isPlaying ? "⏸" : "▶"}
-      </button>
-
-      <button
-        className="music-button"
-        type="button"
-        onClick={nextSong}
-        aria-label="Next song"
-      >
-        ⏭
-      </button>
-
-      <input
-        className="music-volume"
-        type="range"
-        min="0"
-        max="1"
-        step="0.01"
-        value={volume}
-        onChange={handleVolumeChange}
-        aria-label="Volume"
-      />
-    </div>
+    </nav>
   );
 }
