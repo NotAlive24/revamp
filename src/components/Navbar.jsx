@@ -112,17 +112,6 @@ export default function Navbar() {
     <nav className="navbar">
       <img className="nav-logo" src="/logo.png" alt="NotAlive logo" />
 
-      {/* Mobile Toggle Button */}
-      <button 
-        className={`nav-toggle ${isNavOpen ? "open" : ""}`} 
-        onClick={() => setIsNavOpen(!isNavOpen)}
-        aria-label="Toggle navigation"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
       <div className="nav-right">
         {/* Navigation Links */}
         <div className={`nav-links ${isNavOpen ? "open" : ""}`}>
@@ -141,10 +130,12 @@ export default function Navbar() {
           <button type="button" onClick={() => scrollToSection("contact")}>
             Contact
           </button>
+        </div>
 
-          {/* Music Player Section - nested inside nav-links so it collapses
-              into the mobile dropdown together with the nav buttons */}
-          <div className="nav-music-wrapper">
+        {/* Music Player Section - lives outside nav-links now, so it stays
+            visible in the top bar (to the left of the hamburger) instead of
+            collapsing into the mobile dropdown */}
+        <div className="nav-music-wrapper">
           <div className="music-player">
             <audio
               ref={audioRef}
@@ -235,7 +226,18 @@ export default function Navbar() {
             )}
           </div>
         </div>
-        </div>
+
+        {/* Mobile Toggle Button - stays last so the music player renders
+            to its left in the flex row */}
+        <button 
+          className={`nav-toggle ${isNavOpen ? "open" : ""}`} 
+          onClick={() => setIsNavOpen(!isNavOpen)}
+          aria-label="Toggle navigation"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </nav>
   );

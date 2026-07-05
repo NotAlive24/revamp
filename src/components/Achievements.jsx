@@ -7,7 +7,7 @@ export default function Achievements() {
             <br />
             Capability score of 59.
             <br />
-            Participated in CTFs like Industrial Intrusion, Advent of Cyber 2025, Love at First Breach on THM.
+            Participated in CTFs like Industrial Intrusion, Advent of Cyber 2025, Love at First Breach.
         </p>
     </section>
   );

@@ -254,10 +254,10 @@ body {
 #certificates,
 #writeups,
 #contact {
-  scroll-margin-top: 45px;
+  scroll-margin-top: 0px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 865px) {
   #certificates,
   #writeups,
   #contact {
@@ -267,10 +267,10 @@ body {
 
 #about,
 #achievements{
-  scroll-margin-top: 230px;
+  scroll-margin-top: 200px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 865px) {
   #about,
   #achievements {
     scroll-margin-top: 110px;
@@ -297,11 +297,7 @@ body {
   );
 }
 
-@media (max-width: 600px) {
-  .nav-links .music-volume-wrapper {
-    order: 1;
-  }
-
+@media (max-width: 865px) {
   .section::before,
   .certificates::before,
   .writeups::before,
@@ -788,7 +784,7 @@ body {
   cursor: not-allowed;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 865px) {
   .writeup-reader-nav {
     grid-template-columns: 1fr;
   }
@@ -897,7 +893,7 @@ body {
 
 /* Mobile only */
 
-@media (max-width: 600px) {
+@media (max-width: 865px) {
   .navbar {
     height: 64px;
     padding: 0 20px;
@@ -944,35 +940,14 @@ body {
   }
 
   .nav-music-wrapper {
-    padding: 18px 20px;
+    flex-shrink: 0;
+    gap: 6px;
   }
 
-  .nav-links .music-player {
-  max-width: none;
-  width: 100%;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  background: transparent;
-  border: none;
-  padding: 0;
-  gap: 12px;
-}
-
-.nav-links:not(.no-style) .music-controls {
-  order: 0;
-}
-
-.nav-links:not(.no-style) .music-info {
-  display: flex;
-  width: 100%;
-  max-width: none;
-}
-
-.nav-links:not(.no-style) .music-title,
-.nav-links:not(.no-style) .music-artist {
-  max-width: none;
-  white-space: normal;
-}
+  .nav-music-wrapper .music-volume-toggle {
+    width: 30px;
+    height: 30px;
+  }
 
   .hero {
     padding: 100px 20px 40px;
@@ -1130,7 +1105,7 @@ body {
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 865px) {
   .music-player {
     max-width: 120px;
     padding: 6px;
