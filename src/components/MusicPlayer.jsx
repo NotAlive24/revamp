@@ -69,7 +69,6 @@ export default function MusicPlayer() {
     if (isPlaying) {
       playAudio();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSongIndex]);
 
   useEffect(() => {

@@ -7,21 +7,18 @@ export default function Navbar() {
   const audioRef = useRef(null);
   const wasPlayingRef = useRef(false);
 
-  // Music Player State
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState("");
   const [volume, setVolume] = useState(DEFAULT_VOLUME);
   
-  // UI State for the CSS classes
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isVolumeOpen, setIsVolumeOpen] = useState(false);
 
   const currentSong = songs?.[currentSongIndex] || { title: "No Track", artist: "", src: "" };
 
-  // Smooth scroll handler
   const scrollToSection = (id) => {
-    setIsNavOpen(false); // Close mobile menu on click
+    setIsNavOpen(false);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -30,7 +27,6 @@ export default function Navbar() {
     }
   };
 
-  // --- Audio Functions ---
   async function playAudio() {
     const audio = audioRef.current;
     if (!audio) return;
@@ -93,7 +89,6 @@ export default function Navbar() {
     }
   }
 
-  // Reload audio when song changes
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;

@@ -57,6 +57,10 @@ export default function Writeups() {
   const [markdown, setMarkdown] = useState("");
 
   const sectionsRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const dragMovedRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragScrollStartRef = useRef(0);
 
   const sections = useMemo(() => {
     const collectionWriteups = writeups.filter(
@@ -139,6 +143,60 @@ export default function Writeups() {
       element.scrollLeft += event.deltaY;
       event.preventDefault();
     }
+  }
+
+  function handleSectionsPointerDown(event) {
+    if (event.pointerType === "touch") return;
+
+    const element = sectionsRef.current;
+    if (!element) return;
+
+    isDraggingRef.current = true;
+    dragMovedRef.current = false;
+    dragStartXRef.current = event.clientX;
+    dragScrollStartRef.current = element.scrollLeft;
+
+    element.classList.add("dragging");
+    element.setPointerCapture(event.pointerId);
+  }
+
+  function handleSectionsPointerMove(event) {
+    if (!isDraggingRef.current) return;
+
+    const element = sectionsRef.current;
+    if (!element) return;
+
+    const delta = event.clientX - dragStartXRef.current;
+    if (Math.abs(delta) > 4) {
+      dragMovedRef.current = true;
+    }
+
+    element.scrollLeft = dragScrollStartRef.current - delta;
+  }
+
+  function endSectionsDrag(event) {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+
+    const element = sectionsRef.current;
+    if (!element) return;
+
+    element.classList.remove("dragging");
+
+    if (event?.pointerId != null) {
+      try {
+        element.releasePointerCapture(event.pointerId);
+      } catch {
+      }
+    }
+  }
+
+  function handleSectionsClickCapture(event) {
+    if (dragMovedRef.current) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    dragMovedRef.current = false;
   }
 
   function clearFilters() {
@@ -292,6 +350,11 @@ export default function Writeups() {
               className="writeup-sections"
               ref={sectionsRef}
               onWheel={scrollSectionsWithWheel}
+              onPointerDown={handleSectionsPointerDown}
+              onPointerMove={handleSectionsPointerMove}
+              onPointerUp={endSectionsDrag}
+              onPointerCancel={endSectionsDrag}
+              onClickCapture={handleSectionsClickCapture}
             >
               {sections.map((section) => (
                 <button

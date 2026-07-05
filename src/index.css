@@ -1,4 +1,11 @@
-/* Global */
+.unselectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
 p {
   color: wheat;
 }
@@ -56,7 +63,6 @@ body {
   opacity: 1;
 }
 
-/* Background */
 
 .star-background {
   position: fixed;
@@ -70,7 +76,6 @@ body {
   z-index: 1;
 }
 
-/* Navbar */
 
 .navbar {
   position: fixed;
@@ -184,7 +189,6 @@ body {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Hero */
 
 .hero {
   position: relative;
@@ -234,7 +238,6 @@ body {
   margin-bottom: 24px;
 }
 
-/* Generic Sections */
 
 .section {
   position: relative;
@@ -249,7 +252,6 @@ body {
   opacity: 0.8;
 }
 
-/* Scroll offset for fixed navbar */
 
 #certificates,
 #writeups,
@@ -277,7 +279,6 @@ body {
   }
 }
 
-/* Section separators */
 
 .section::before,
 .certificates::before,
@@ -307,7 +308,6 @@ body {
   }
 }
 
-/* Certificates */
 
 .certificates {
   position: relative;
@@ -441,7 +441,6 @@ body {
   cursor: pointer;
 }
 
-/* Writeups */
 
 .writeups {
   position: relative;
@@ -553,6 +552,7 @@ body {
   padding-bottom: 8px;
   cursor: grab;
   user-select: none;
+  touch-action: pan-x;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -790,7 +790,6 @@ body {
   }
 }
 
-/* Contact */
 
 .contact {
   position: relative;
@@ -843,7 +842,6 @@ body {
   word-break: break-word;
 }
 
-/* Tablet / Small screens I want someone to help me fix this spot */
 
 @media (max-width: 800px) {
   .writeups-layout {
@@ -891,7 +889,6 @@ body {
   }
 }
 
-/* Mobile only */
 
 @media (max-width: 865px) {
   .navbar {
@@ -1046,7 +1043,6 @@ body {
   line-height: 1.0;
 }
 
-/* Music Player */
 
 .music-player {
   margin-left: 0px;
@@ -1197,7 +1193,6 @@ body {
   cursor: pointer;
 }
 
-/* Scroll reveal */
 
 .reveal {
   opacity: 0;
@@ -1210,7 +1205,6 @@ body {
   transform: none;
 }
 
-/* Reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
   *,
