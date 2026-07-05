@@ -78,7 +78,7 @@ body {
   left: 0;
   width: 100%;
   height: 70px;
-  padding: 0 32px;
+  padding: 0 40px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -111,7 +111,7 @@ body {
   gap: 28px;
 }
 
-.nav-links:not(.no-style) button {
+.nav-links:not(.no-style) > button {
   position: relative;
   border: none;
   background: transparent;
@@ -121,16 +121,16 @@ body {
   padding: 8px 0;
 }
 
-.nav-links:not(.no-style) button:hover {
+.nav-links:not(.no-style) > button:hover {
   color: wheat;
 }
 
-.nav-links:not(.no-style) button.active {
+.nav-links:not(.no-style) > button.active {
   color: wheat;
   font-weight: 600;
 }
 
-.nav-links:not(.no-style) button::after {
+.nav-links:not(.no-style) > button::after {
   content: "";
   position: absolute;
   left: 0;
@@ -141,8 +141,8 @@ body {
   transition: width 0.25s ease;
 }
 
-.nav-links:not(.no-style) button:hover::after,
-.nav-links:not(.no-style) button.active::after {
+.nav-links:not(.no-style) > button:hover::after,
+.nav-links:not(.no-style) > button.active::after {
   width: 100%;
 }
 
@@ -239,7 +239,7 @@ body {
 .section {
   position: relative;
   min-height: 100vh;
-  padding: 120px 40px;
+  padding: 160px 40px 40px;
 }
 
 .section-text {
@@ -247,6 +247,34 @@ body {
   font-size: 1.2rem;
   color: white;
   opacity: 0.8;
+}
+
+/* Scroll offset for fixed navbar */
+
+#certificates,
+#writeups,
+#contact {
+  scroll-margin-top: 45px;
+}
+
+@media (max-width: 600px) {
+  #certificates,
+  #writeups,
+  #contact {
+    scroll-margin-top: 25px;
+  }
+}
+
+#about,
+#achievements{
+  scroll-margin-top: 230px;
+}
+
+@media (max-width: 600px) {
+  #about,
+  #achievements {
+    scroll-margin-top: 110px;
+  }
 }
 
 /* Section separators */
@@ -288,7 +316,7 @@ body {
 .certificates {
   position: relative;
   min-height: 100vh;
-  padding: 120px 40px;
+  padding: 160px 40px 40px;
 }
 
 .certificates-grid {
@@ -422,7 +450,7 @@ body {
 .writeups {
   position: relative;
   min-height: 100vh;
-  padding: 120px 40px;
+  padding: 160px 40px 40px;
 }
 
 .writeups-empty {
@@ -771,7 +799,7 @@ body {
 .contact {
   position: relative;
   min-height: 100vh;
-  padding: 120px 40px;
+  padding: 160px 40px 40px;
 }
 
 .contact-grid {
@@ -872,7 +900,7 @@ body {
 @media (max-width: 600px) {
   .navbar {
     height: 64px;
-    padding: 0 14px;
+    padding: 0 20px;
   }
 
   .nav-logo {

@@ -141,10 +141,10 @@ export default function Navbar() {
           <button type="button" onClick={() => scrollToSection("contact")}>
             Contact
           </button>
-        </div>
 
-        {/* Music Player Section */}
-        <div className="nav-music-wrapper">
+          {/* Music Player Section - nested inside nav-links so it collapses
+              into the mobile dropdown together with the nav buttons */}
+          <div className="nav-music-wrapper">
           <div className="music-player">
             <audio
               ref={audioRef}
@@ -234,6 +234,7 @@ export default function Navbar() {
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
     </nav>
