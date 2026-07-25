@@ -98,3 +98,26 @@ html.notalive-cursor-active [contenteditable="true"] {
     animation-duration: 0.01s;
   }
 }
+
+.notalive-cursor-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10000;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--cursor-cyan);
+  background: rgba(10, 10, 10, 0.7);
+  border: 1px solid rgba(111, 211, 232, 0.25);
+  padding: 6px 9px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.notalive-cursor-toggle:hover {
+  border-color: var(--cursor-cyan);
+}
+.notalive-cursor-toggle:focus-visible {
+  outline: 2px solid var(--cursor-cyan);
+  outline-offset: 2px;
+}
