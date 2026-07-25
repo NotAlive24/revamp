@@ -3,6 +3,7 @@ import "./CustomCursor.css";
 
 const STORAGE_KEY = "notalive-cursor-enabled";
 const IDLE_MS = 4500;
+const IDLE_REPEAT_MS = 1500;
 
 export default function CustomCursor({ selector = ".cursor-hoverable" }) {
   const [supported, setSupported] = useState(false);
@@ -40,7 +41,8 @@ export default function CustomCursor({ selector = ".cursor-hoverable" }) {
     let hovering = false;
     let rafId;
     let lastMoveAt = Date.now();
-    let idlePinged = false;
+    let lastPingAt = 0;
+    let isIdle = false; 
 
     const toHex = (n) => n.toString(16).padStart(4, "0").toUpperCase();
 
@@ -57,7 +59,7 @@ export default function CustomCursor({ selector = ".cursor-hoverable" }) {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
       lastMoveAt = Date.now();
-      idlePinged = false;
+      isIdle = false;
       dot.style.left = mouse.x + "px";
       dot.style.top = mouse.y + "px";
       if (!hovering) {
@@ -74,9 +76,19 @@ export default function CustomCursor({ selector = ".cursor-hoverable" }) {
       ring.style.left = ringPos.x + "px";
       ring.style.top = ringPos.y + "px";
 
-      if (!reduceMotion && !hovering && !idlePinged && Date.now() - lastMoveAt > IDLE_MS) {
-        spawnPing(mouse.x, mouse.y);
-        idlePinged = true;
+      // NEW: Repeating ping logic
+      const now = Date.now();
+      if (!reduceMotion && !hovering) {
+        if (!isIdle && now - lastMoveAt > IDLE_MS) {
+          // Trigger the very first ping
+          spawnPing(mouse.x, mouse.y);
+          isIdle = true;
+          lastPingAt = now;
+        } else if (isIdle && now - lastPingAt > IDLE_REPEAT_MS) {
+          // Trigger repeating pings more often
+          spawnPing(mouse.x, mouse.y);
+          lastPingAt = now;
+        }
       }
 
       rafId = requestAnimationFrame(tick);
@@ -122,8 +134,6 @@ export default function CustomCursor({ selector = ".cursor-hoverable" }) {
     window.addEventListener("mousedown", onMouseDown);
     rafId = requestAnimationFrame(tick);
 
-    // Re-scan for hoverable elements whenever the DOM changes (route changes,
-    // new writeup cards rendering, etc.) so this stays a "mount once" component.
     const cleanupFns = [];
     const scan = () => {
       cleanupFns.splice(0).forEach((fn) => fn());
