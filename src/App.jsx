@@ -1,19 +1,20 @@
-import Navbar from "./components/Navbar.jsx";
-import Hero from "./components/Hero.jsx";
+import { Helmet } from "react-helmet-async";
 import About from "./components/About.jsx";
 import Achievements from "./components/Achievements.jsx";
 import Certificates from "./components/Certificates.jsx";
-import Writeups from "./components/Writeups.jsx";
 import Contact from "./components/Contact.jsx";
+import CustomCursor from "./components/CustomCursor.jsx";
+import Hero from "./components/Hero.jsx";
+import Navbar from "./components/Navbar.jsx";
 import StarBackground from "./components/StarBackground.jsx";
-import { Helmet } from "react-helmet-async";
+import Writeups from "./components/Writeups.jsx";
 import { seo, structuredData } from "./data/seo.js";
 
 export default function App() {
   return (
     <>
       <Helmet htmlAttributes={{ lang: seo.language }}>
-        <title>{seo.title}</title>
+                <title>{seo.title}</title>
         <meta name="title" content={seo.title} />
         <meta name="description" content={seo.description} />
         <meta name="keywords" content={seo.keywords.join(", ")} />
@@ -57,8 +58,8 @@ export default function App() {
         </script>
       </Helmet>
 
+      <CustomCursor />
       <StarBackground />
-
       <div className="site-content">
         <Navbar />
         <Hero />

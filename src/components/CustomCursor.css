@@ -1,0 +1,100 @@
+/* Recon-style cursor theme — colors are variables so they're easy to retheme. */
+:root {
+  --cursor-amber: #ffb000;
+  --cursor-cyan: #6fd3e8;
+  --cursor-bg: #0a0a0a;
+}
+
+html.notalive-cursor-active,
+html.notalive-cursor-active * {
+  cursor: none !important;
+}
+
+html.notalive-cursor-active input,
+html.notalive-cursor-active textarea,
+html.notalive-cursor-active [contenteditable="true"] {
+  cursor: text !important;
+}
+
+.notalive-cursor-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.notalive-cursor-dot {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: var(--cursor-amber);
+  box-shadow: 0 0 6px rgba(255, 176, 0, 0.9);
+}
+
+.notalive-cursor-ring {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 176, 0, 0.55);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.notalive-cursor-ring.hidden {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.notalive-cursor-corner {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  transition: opacity 0.12s ease, top 0.12s ease, left 0.12s ease;
+}
+.notalive-cursor-corner.on { opacity: 1; }
+.notalive-cursor-corner.tl { border-top: 2px solid var(--cursor-cyan); border-left: 2px solid var(--cursor-cyan); }
+.notalive-cursor-corner.tr { border-top: 2px solid var(--cursor-cyan); border-right: 2px solid var(--cursor-cyan); }
+.notalive-cursor-corner.bl { border-bottom: 2px solid var(--cursor-cyan); border-left: 2px solid var(--cursor-cyan); }
+.notalive-cursor-corner.br { border-bottom: 2px solid var(--cursor-cyan); border-right: 2px solid var(--cursor-cyan); }
+
+.notalive-cursor-tag {
+  position: fixed;
+  transform: translate(16px, 20px);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--cursor-cyan);
+  background: rgba(10, 10, 10, 0.7);
+  padding: 2px 5px;
+  border: 1px solid rgba(111, 211, 232, 0.25);
+  white-space: nowrap;
+}
+
+.notalive-cursor-ping {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  border: 1px solid var(--cursor-amber);
+  pointer-events: none;
+  z-index: 9998;
+  animation: notalive-ping-out 0.6s ease-out forwards;
+}
+@keyframes notalive-ping-out {
+  from { transform: scale(1); opacity: 0.9; }
+  to { transform: scale(4.5); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notalive-cursor-ring,
+  .notalive-cursor-corner {
+    transition: none;
+  }
+  .notalive-cursor-ping {
+    animation-duration: 0.01s;
+  }
+}
