@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { Route, Routes } from "react-router-dom";
 import About from "./components/About.jsx";
 import Achievements from "./components/Achievements.jsx";
 import Certificates from "./components/Certificates.jsx";
@@ -7,14 +9,40 @@ import CustomCursor from "./components/CustomCursor.jsx";
 import Hero from "./components/Hero.jsx";
 import Navbar from "./components/Navbar.jsx";
 import StarBackground from "./components/StarBackground.jsx";
+import WriteupPage from "./components/WriteupPage.jsx";
 import Writeups from "./components/Writeups.jsx";
 import { seo, structuredData } from "./data/seo.js";
+
+function HomePage() {
+  // Preserves the old "smooth-scroll to write-ups" behavior when
+  // returning from a writeup page via a "/#writeups" link.
+  useEffect(() => {
+    if (window.location.hash === "#writeups") {
+      document.getElementById("writeups")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, []);
+
+  return (
+    <div className="site-content">
+      <Navbar />
+      <Hero />
+      <About />
+      <Achievements />
+      <Certificates />
+      <Writeups />
+      <Contact />
+    </div>
+  );
+}
 
 export default function App() {
   return (
     <>
       <Helmet htmlAttributes={{ lang: seo.language }}>
-                <title>{seo.title}</title>
+        <title>{seo.title}</title>
         <meta name="title" content={seo.title} />
         <meta name="description" content={seo.description} />
         <meta name="keywords" content={seo.keywords.join(", ")} />
@@ -38,7 +66,6 @@ export default function App() {
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={seo.title} />
 
-        {/* Twitter / X card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={seo.title} />
         <meta name="twitter:description" content={seo.description} />
@@ -60,15 +87,11 @@ export default function App() {
 
       <CustomCursor />
       <StarBackground />
-      <div className="site-content">
-        <Navbar />
-        <Hero />
-        <About />
-        <Achievements />
-        <Certificates />
-        <Writeups />
-        <Contact />
-      </div>
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/writeups/:slug" element={<WriteupPage />} />
+      </Routes>
     </>
   );
 }

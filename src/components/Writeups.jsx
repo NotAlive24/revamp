@@ -1,18 +1,16 @@
 import { useMemo, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { Link } from "react-router-dom";
 import { writeups } from "../data/writeups.js";
 import { useReveal } from "../hooks/useReveal.js";
 
-function WriteupListItem({ writeup, onOpen }) {
+function WriteupListItem({ writeup }) {
   const [ref, isVisible] = useReveal();
 
   return (
-    <button
+    <Link
       ref={ref}
-      type="button"
+      to={`/writeups/${writeup.slug}`}
       className={`writeup-list-item reveal ${isVisible ? "reveal-visible" : ""}`}
-      onClick={() => onOpen(writeup)}
     >
       <div>
         <h3>{writeup.title}</h3>
@@ -20,26 +18,8 @@ function WriteupListItem({ writeup, onOpen }) {
       </div>
 
       <span>Read →</span>
-    </button>
+    </Link>
   );
-}
-
-function encodePath(fileName) {
-  return fileName
-    .split("/")
-    .map((part) => encodeURIComponent(part))
-    .join("/");
-}
-
-function fixObsidianMarkdown(markdown) {
-  return markdown
-    .replace(/!\[\[([^|\]]+)(?:\|[^\]]+)?\]\]/g, (_, fileName) => {
-      const src = `/writeups/rss/${encodePath(fileName)}`;
-      return `![${fileName}](${src})`;
-    })
-    .replace(/\[\[([^|\]]+)(?:\|([^\]]+))?\]\]/g, (_, target, label) => {
-      return label || target;
-    });
 }
 
 export default function Writeups() {
@@ -50,11 +30,8 @@ export default function Writeups() {
   const [selectedCollection, setSelectedCollection] = useState(
     collections[0] || ""
   );
-
   const [selectedSection, setSelectedSection] = useState("All");
   const [search, setSearch] = useState("");
-  const [activeWriteup, setActiveWriteup] = useState(null);
-  const [markdown, setMarkdown] = useState("");
 
   const sectionsRef = useRef(null);
 
@@ -66,9 +43,7 @@ export default function Writeups() {
     return [
       "All",
       ...new Set(
-        collectionWriteups
-          .map((writeup) => writeup.section)
-          .filter(Boolean)
+        collectionWriteups.map((writeup) => writeup.section).filter(Boolean)
       ),
     ];
   }, [selectedCollection]);
@@ -77,12 +52,9 @@ export default function Writeups() {
 
   const filteredWriteups = useMemo(() => {
     return writeups.filter((writeup) => {
-      const matchesCollection =
-        writeup.collection === selectedCollection;
-
+      const matchesCollection = writeup.collection === selectedCollection;
       const matchesSection =
-        selectedSection === "All" ||
-        writeup.section === selectedSection;
+        selectedSection === "All" || writeup.section === selectedSection;
 
       const searchableText = [
         writeup.title,
@@ -94,41 +66,20 @@ export default function Writeups() {
         .toLowerCase();
 
       const matchesSearch =
-        normalizedSearch === "" ||
-        searchableText.includes(normalizedSearch);
+        normalizedSearch === "" || searchableText.includes(normalizedSearch);
 
       return matchesCollection && matchesSection && matchesSearch;
     });
   }, [selectedCollection, selectedSection, normalizedSearch]);
 
-  const activeIndex = useMemo(() => {
-    if (!activeWriteup) return -1;
-
-    return filteredWriteups.findIndex(
-      (writeup) => writeup.slug === activeWriteup.slug
-    );
-  }, [activeWriteup, filteredWriteups]);
-
-  const previousWriteup =
-    activeIndex > 0 ? filteredWriteups[activeIndex - 1] : null;
-
-  const nextWriteup =
-    activeIndex >= 0 && activeIndex < filteredWriteups.length - 1
-      ? filteredWriteups[activeIndex + 1]
-      : null;
-
   function selectCollection(collection) {
     setSelectedCollection(collection);
     setSelectedSection("All");
     setSearch("");
-    setActiveWriteup(null);
-    setMarkdown("");
   }
 
   function selectSection(section) {
     setSelectedSection(section);
-    setActiveWriteup(null);
-    setMarkdown("");
   }
 
   function scrollSectionsWithWheel(event) {
@@ -146,27 +97,6 @@ export default function Writeups() {
     setSelectedSection("All");
   }
 
-  async function openWriteup(writeup) {
-    if (!writeup) return;
-
-    const content = await writeup.loader();
-
-    setActiveWriteup(writeup);
-    setMarkdown(fixObsidianMarkdown(content));
-
-    requestAnimationFrame(() => {
-      document.getElementById("writeups")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    });
-  }
-
-  function closeWriteup() {
-    setActiveWriteup(null);
-    setMarkdown("");
-  }
-
   return (
     <div id="writeups" className="writeups">
       <div className="writeups-header">
@@ -178,91 +108,10 @@ export default function Writeups() {
         <div className="writeups-empty">
           <p>No write-ups have been published yet — check back soon.</p>
         </div>
-      ) : activeWriteup ? (
-        <article className="writeup-reader">
-          <button
-            className="writeup-back"
-            type="button"
-            onClick={closeWriteup}
-          >
-            ← Back to write-ups
-          </button>
-
-          <div className="writeup-reader-meta">
-            <span>{activeWriteup.collection}</span>
-            <span>{activeWriteup.section}</span>
-          </div>
-
-          <div className="writeup-reader-title">
-            {activeWriteup.title}
-          </div>
-
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              img({ src, alt }) {
-                const source = src || "";
-                const isVideo = source.toLowerCase().endsWith(".mp4");
-
-                if (isVideo) {
-                  return (
-                    <video
-                      className="writeup-media"
-                      src={source}
-                      controls
-                    />
-                  );
-                }
-
-                return (
-                  <img
-                    className="writeup-media"
-                    src={source}
-                    alt={alt || ""}
-                    onLoad={(event) =>
-                      event.target.classList.add("img-loaded")
-                    }
-                  />
-                );
-              },
-            }}
-          >
-            {markdown}
-          </ReactMarkdown>
-
-          <div className="writeup-reader-nav">
-            <button
-              type="button"
-              className="writeup-nav-button"
-              disabled={!previousWriteup}
-              onClick={() => openWriteup(previousWriteup)}
-            >
-              <span>← Previous</span>
-              <strong>
-                {previousWriteup
-                  ? previousWriteup.title
-                  : "No previous write-up"}
-              </strong>
-            </button>
-
-            <button
-              type="button"
-              className="writeup-nav-button"
-              disabled={!nextWriteup}
-              onClick={() => openWriteup(nextWriteup)}
-            >
-              <span>Next →</span>
-              <strong>
-                {nextWriteup ? nextWriteup.title : "No next write-up"}
-              </strong>
-            </button>
-          </div>
-        </article>
       ) : (
         <div className="writeups-layout">
           <aside className="writeups-sidebar">
             <h3>Collections</h3>
-
             {collections.map((collection) => (
               <button
                 key={collection}
@@ -331,11 +180,7 @@ export default function Writeups() {
             ) : (
               <div className="writeups-list">
                 {filteredWriteups.map((writeup) => (
-                  <WriteupListItem
-                    key={writeup.slug}
-                    writeup={writeup}
-                    onOpen={openWriteup}
-                  />
+                  <WriteupListItem key={writeup.slug} writeup={writeup} />
                 ))}
               </div>
             )}

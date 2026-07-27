@@ -671,10 +671,14 @@ body {
 }
 
 .writeup-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 28px;
   border: none;
   background: wheat;
-  color: #111;
+  color: #111 !important;
+  text-decoration: none !important;
   padding: 12px 18px;
   border-radius: 999px;
   font: inherit;
