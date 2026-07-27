@@ -677,8 +677,8 @@ body {
   margin-bottom: 28px;
   border: none;
   background: wheat;
-  color: #111 !important;
-  text-decoration: none !important;
+  color: #111;
+  text-decoration: none;
   padding: 12px 18px;
   border-radius: 999px;
   font: inherit;
@@ -704,7 +704,7 @@ body {
   opacity: 0.9;
 }
 
-.writeup-reader a {
+.writeup-reader a:not(.writeup-back) {
   color: wheat;
 }
 
