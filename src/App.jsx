@@ -84,10 +84,9 @@ export default function App() {
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
-
       <CustomCursor />
       <StarBackground />
-
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/writeups/:slug" element={<WriteupPage />} />
