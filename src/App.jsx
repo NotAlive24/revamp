@@ -14,6 +14,8 @@ import Writeups from "./components/Writeups.jsx";
 import { seo, structuredData } from "./data/seo.js";
 
 function HomePage() {
+  // Preserves the old "smooth-scroll to write-ups" behavior when
+  // returning from a writeup page via a "/#writeups" link.
   useEffect(() => {
     if (window.location.hash === "#writeups") {
       document.getElementById("writeups")?.scrollIntoView({
@@ -25,6 +27,7 @@ function HomePage() {
 
   return (
     <div className="site-content">
+      <Navbar />
       <Hero />
       <About />
       <Achievements />
