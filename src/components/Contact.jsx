@@ -19,6 +19,12 @@ const contacts = [
     href: "https://tryhackme.com/p/NotAlive",
     external: true,
   },
+  {
+    label: "HackTheBox",
+    value: "HackTheBox Profile",
+    href: "https://profile.hackthebox.com/profile/019f9975-d51b-7271-87e8-f290fead13df",
+    external: true,
+  },
 ];
 
 function ContactCard({ item }) {
