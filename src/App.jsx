@@ -4,12 +4,14 @@ import { Route, Routes } from "react-router-dom";
 import About from "./components/About.jsx";
 import Achievements from "./components/Achievements.jsx";
 import Certificates from "./components/Certificates.jsx";
+import CommandPalette from "./components/CommandPalette.jsx";
 import Contact from "./components/Contact.jsx";
 import CustomCursor from "./components/CustomCursor.jsx";
 import Hero from "./components/Hero.jsx";
 import Navbar from "./components/Navbar.jsx";
+import NotFoundPage from "./components/NotFoundPage.jsx";
 import StarBackground from "./components/StarBackground.jsx";
-import WriteupPage from "./components/WriteupPage.jsx";
+import WriteupPage from "./components/Writeuppage.jsx";
 import Writeups from "./components/Writeups.jsx";
 import { seo, structuredData } from "./data/seo.js";
 
@@ -81,12 +83,16 @@ export default function App() {
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
+
       <CustomCursor />
       <StarBackground />
       <Navbar />
+      <CommandPalette />
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/writeups/:slug" element={<WriteupPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );
