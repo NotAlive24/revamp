@@ -13,6 +13,7 @@ import NotFoundPage from "./components/NotFoundPage.jsx";
 import StarBackground from "./components/StarBackground.jsx";
 import WriteupPage from "./components/Writeuppage.jsx";
 import Writeups from "./components/Writeups.jsx";
+import Projects from "./components/Projects.jsx";
 import { seo, structuredData } from "./data/seo.js";
 
 function HomePage() {
@@ -30,6 +31,7 @@ function HomePage() {
       <Hero />
       <About />
       <Achievements />
+      <Projects />
       <Certificates />
       <Writeups />
       <Contact />

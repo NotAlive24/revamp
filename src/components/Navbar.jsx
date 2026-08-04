@@ -116,6 +116,9 @@ export default function Navbar() {
           <button type="button" onClick={() => scrollToSection("achievements")}>
             Achievements
           </button>
+          <button type="button" onClick={() => scrollToSection("projects")}>
+            Projects
+          </button>
           <button type="button" onClick={() => scrollToSection("certificates")}>
             Certs
           </button>
