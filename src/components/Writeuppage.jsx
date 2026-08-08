@@ -2,11 +2,10 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import ReactMarkdown from "react-markdown";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 import { seo } from "../data/seo.js";
 import { writeups } from "../data/writeups.js";
-
 
 function encodePath(fileName) {
   return fileName
@@ -53,6 +52,12 @@ function getNodeText(node) {
 
 const CVE_PATTERN = /CVE-\d{4}-\d+/i;
 
+/**
+ * Isolated on purpose: its own state means a scroll event only re-renders
+ * this tiny bar, never the parent WriteupPage (and therefore never the
+ * <ReactMarkdown> tree/images sitting next to it). Give it key={writeup.slug}
+ * from the parent so it fully resets when switching writeups.
+ */
 function ReadingProgressBar({ articleRef }) {
   const [progress, setProgress] = useState(0);
 
@@ -154,12 +159,14 @@ export default function WriteupPage() {
     };
   }, [writeup]);
 
+  // Prefetch the next writeup's markdown once the current one is ready.
   useEffect(() => {
     if (status === "ready" && nextWriteup) {
       nextWriteup.loader().catch(() => {});
     }
   }, [status, nextWriteup]);
 
+  // Keyboard prev/next — Left/Right arrows or [ / ].
   useEffect(() => {
     function onKeyDown(event) {
       const tag = document.activeElement?.tagName;
@@ -178,6 +185,7 @@ export default function WriteupPage() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [previousWriteup, nextWriteup, navigate]);
 
+  // Table of contents — extracted from raw markdown (## and ### only).
   const toc = useMemo(() => {
     if (!markdown) return [];
     const items = [];
@@ -209,6 +217,9 @@ export default function WriteupPage() {
   }
 
   const canonicalUrl = `https://notalive.in/writeups/${writeup.slug}`;
+  const sectionOrCollection =
+    writeup.section !== "General" ? writeup.section : writeup.collection;
+  const pageTitle = `${writeup.title} — ${sectionOrCollection} | ${seo.siteName}`;
   const pageDescription = `${writeup.title} — ${writeup.collection}${
     writeup.section !== "General" ? ` / ${writeup.section}` : ""
   }. ${seo.description}`;
@@ -235,18 +246,18 @@ export default function WriteupPage() {
     author: { "@type": "Person", name: seo.author },
     url: canonicalUrl,
     isPartOf: seo.siteName,
-    about: writeup.section !== "General" ? writeup.section : writeup.collection,
+    about: sectionOrCollection,
   };
 
   return (
     <div className="site-content">
       <Helmet>
-        <title>{`${writeup.title} — ${writeup.section !== "General" ? writeup.section : writeup.collection} | ${seo.siteName}`}</title>
+        <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:title" content={`${writeup.title} — ${writeup.section !== "General" ? writeup.section : writeup.collection} | ${seo.siteName}`} />
+        <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <script type="application/ld+json">
           {JSON.stringify(articleStructuredData)}
@@ -332,6 +343,7 @@ export default function WriteupPage() {
                         className="writeup-media"
                         src={source}
                         alt={alt || ""}
+                        loading="lazy"
                         onLoad={(event) => event.target.classList.add("img-loaded")}
                       />
                     );
@@ -370,7 +382,7 @@ export default function WriteupPage() {
 
             {relatedWriteups.length > 0 && (
               <div className="writeup-related">
-                <h4>More in {writeup.section !== "General" ? writeup.section : writeup.collection}</h4>
+                <h4>More in {sectionOrCollection}</h4>
                 <div className="writeup-related-grid">
                   {relatedWriteups.map((r) => (
                     <Link key={r.slug} to={`/writeups/${r.slug}`} className="writeup-related-card">

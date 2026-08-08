@@ -32,6 +32,7 @@ function CertificateCard({ cert, onSelect }) {
       <img
         src={cert.image}
         alt={cert.title}
+        loading="lazy"
         onLoad={(event) => event.target.classList.add("img-loaded")}
       />
 
@@ -89,6 +90,7 @@ export default function Certificates() {
             <img
               src={selectedCert.image}
               alt={selectedCert.title}
+              loading="lazy"
               onLoad={(event) => event.target.classList.add("img-loaded")}
             />
 
