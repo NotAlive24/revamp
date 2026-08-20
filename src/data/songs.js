@@ -5,6 +5,11 @@ export const songs = [
     src: "/music/Billie-Jean.mp3",
   },
   {
+    title: "Dangerous",
+    artist: "Michael Jackson",
+    src: "/music/Dangerous.mp3",
+  },
+  {
     title: "Beat It",
     artist: "Michael Jackson",
     src: "/music/Beat-It.mp3",
@@ -153,11 +158,6 @@ export const songs = [
     title: "Workin Day and Night",
     artist: "Michael Jackson",
     src: "/music/Workin-Day-and-Night.mp3",
-  },
-  {
-    title: "Dangerous",
-    artist: "Michael Jackson",
-    src: "/music/Dangerous.mp3",
   },
   {
     title: "In the Closet",
